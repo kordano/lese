@@ -1,8 +1,9 @@
 goog.provide('cljs.lese.core');
+"use strict";
 
-var model =  [{title: 'GI Joe', ts: '1970', tags: ['a', 'b', 'c'], url: "google.com"},
-              {title: 'GI Joe 2', ts: '1971', tags: ['a', 'b', 'c'], url: "google.com"},
-              {title: 'GI 3', ts: '1975', tags: ['a', 'b', 'c'], url: "google"}];
+var model = Immutable.Seq([{title: 'GI Joe', ts: 1900 + goog.math.randomInt(100), tags: ['a', 'b', 'c'], url: "google.com"},
+              {title: 'GI Jane', ts: 1900 + goog.math.randomInt(100), tags: ['a', 'b', 'c'], url: "google.com"},
+                           {title: 'GI Konny', ts: 1900 + goog.math.randomInt(100), tags: ['a', 'b', 'c'], url: "google"}]);
 
 var bookmark = React.createClass({
   render : function() {
@@ -42,7 +43,6 @@ var overseer = React.createClass({
     return {searchText: ""};
   },
   handleChange: function(event) {
-    console.log(event.target.value);
     this.setState({searchText: event.target.value});
   },
   render : function() {
@@ -53,12 +53,9 @@ var overseer = React.createClass({
   }
 });
 
-
 function createRoot() {
-  return React.createElement(overseer,
-                             {data: model});
+  return React.createElement(overseer, {data: model});
 };
-
 
 var root = createRoot();
 var container = document.body;
