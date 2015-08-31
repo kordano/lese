@@ -10,6 +10,10 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.48"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                 
+                 [com.datomic/datomic-free "0.9.5206"]
+                 [com.taoensso/timbre "4.1.1"]
+                 
                  [http-kit "2.1.19"]
                  [ring "1.4.0"]
                  [enlive "1.1.6"]
@@ -21,6 +25,11 @@
 
   :plugins [[lein-cljsbuild "1.0.5"]
             [lein-figwheel "0.3.8-SNAPSHOT"]]
+  
+  :figwheel {:http-server-root "public"
+             :port 3449
+             :css-dirs ["resources/public/css"]}
+
   :cljsbuild {
     :builds [{:id "dev"
               :source-paths ["src/cljs"]
