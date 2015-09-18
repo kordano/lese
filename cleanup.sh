@@ -1,5 +1,5 @@
 #!/bin/bash
-rm -rf js
-rm  css/*.css
+rm -rf public/js
+rm  /public/css/*.css
 rm -rf target
 echo 'Project cleaned!'

@@ -1,0 +1,22 @@
+{
+  "name": "lese",
+  "version": "0.0.0",
+  "homepage": "https://github.com/kordano/lese",
+  "authors": [
+    "kordano <konrad.kuehne@rocketmail.com>"
+  ],
+  "description": "Simple bookmarking application",
+  "main": "src/core.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "immutable": "~3.7.5",
+    "react": "~0.13.3",
+  }
+}

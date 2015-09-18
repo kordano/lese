@@ -1,9 +1,7 @@
 module.exports = function(grunt) {
   "use strict";
-
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-
-
+  
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     express: {
@@ -11,7 +9,7 @@ module.exports = function(grunt) {
         options: {
           port: 9000,
           hostname: "0.0.0.0",
-          bases: [__dirname]
+          bases: [__dirname + "/public", __dirname + "/bower_components"]
         }
       }
     },
@@ -21,7 +19,7 @@ module.exports = function(grunt) {
           'src/*.js',
           'src/libs/*.js'
         ],
-        dest: 'public/js/global.js'
+        dest: 'public/js/lese.js'
       }
     },
     uglify: {
@@ -36,7 +34,7 @@ module.exports = function(grunt) {
           style: 'compressed'
         },
         files: {
-          'public/css/global.css': 'src/css/global.scss'
+          'public/css/global.css': 'src/style.scss'
         }
       }
     },
@@ -46,7 +44,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ["src/*.js"],
-        tasks: ['concat', 'browserify'],
+        tasks: ['concat'],
         options: {
           spawn: false,
           livereload: true
@@ -69,6 +67,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-express');
-  grunt.registerTask('default', ['concat', 'browserify', 'uglify', 'sass']);
+  grunt.registerTask('default', ['concat', 'uglify', 'sass']);
   grunt.registerTask('dev', ['express', 'watch']);
 };

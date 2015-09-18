@@ -1,8 +1,17 @@
-var Immutable = require('immutable');
-var React = require('react');
 var model = Immutable.Seq([{title: 'GI Joe', ts: 1959, tags: ['a', 'b', 'c'], url: "google.com"},
-              {title: 'GI Jane', ts: 1969 , tags: ['a', 'b', 'c'], url: "google.com"},
-                           {title: 'GI Konny', ts: 666, tags: ['a', 'b', 'c'], url: "google"}]);
+                           {title: 'GI Jane', ts: 1969 , tags: ['a', 'b', 'c'], url: "google.com"},
+                           {title: 'GI Konny', ts: 999, tags: ['a', 'b', 'c'], url: "google"}]);
+
+io = io.connect();
+
+// Emit ready event.
+io.emit('ready');
+
+// Listen for the talk event.
+io.on('talk', function(data) {
+  alert(data.message);
+});
+
 
 var bookmark = React.createClass({
   render : function() {
@@ -55,6 +64,7 @@ var overseer = React.createClass({
 function createRoot() {
   return React.createElement(overseer, {data: model});
 };
+
 
 var root = createRoot();
 var container = document.body;
