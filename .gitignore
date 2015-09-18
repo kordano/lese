@@ -1,5 +1,7 @@
-/target
-pom.xml
-pom.xml.asc
-/node_modules
-/js
+target
+node_modules
+bower_components
+public/js
+public/css
+.sass-cache
+.projectile
