@@ -2,10 +2,12 @@
   "name": "lese",
   "version": "0.0.0",
   "description": "Simple bookmarking app",
-  "main": "js/lese.js",
+  "main": "js/server/core.js",
   "dependencies": {
     "react": "^0.13.3",
-    "immutable": "~3.7.5"
+    "immutable": "~3.7.5",
+    "express": "~4.13.3",
+    "socket.io": "~1.3.6"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

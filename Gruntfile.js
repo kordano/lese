@@ -18,16 +18,16 @@ module.exports = function(grunt) {
     concat: {
       dist :{
         src: [
-          'src/client/*.js',
-          'src/client/libs/*.js'
+          'src/*.js',
+          'src/libs/*.js'
         ],
-        dest: 'js/global.js'
+        dest: 'public/js/global.js'
       }
     },
     uglify: {
       build: {
-        src: "js/lese.js",
-        dest: "js/lese.min.js"
+        src: "public/js/lese.js",
+        dest: "public/js/lese.min.js"
       }
     },
     sass: {
@@ -36,16 +36,16 @@ module.exports = function(grunt) {
           style: 'compressed'
         },
         files: {
-          'css/global.css': 'src/css/global.scss'
+          'public/css/global.css': 'src/css/global.scss'
         }
       }
     },
      browserify: {
-      'js/lese.js': ['js/global.js']
+      'public/js/lese.js': ['public/js/global.js']
      },
     watch: {
       scripts: {
-        files: ["src/client/*.js"],
+        files: ["src/*.js"],
         tasks: ['concat', 'browserify'],
         options: {
           spawn: false,
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
         }
       },
       css: {
-        files: ['src/css/*.scss'],
+        files: ['src/*.scss'],
         tasks: ['sass'],
         options: {
           spawn: false,

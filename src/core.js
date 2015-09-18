@@ -2,7 +2,7 @@ var Immutable = require('immutable');
 var React = require('react');
 var model = Immutable.Seq([{title: 'GI Joe', ts: 1959, tags: ['a', 'b', 'c'], url: "google.com"},
               {title: 'GI Jane', ts: 1969 , tags: ['a', 'b', 'c'], url: "google.com"},
-                           {title: 'GI Konny', ts: 1915, tags: ['a', 'b', 'c'], url: "google"}]);
+                           {title: 'GI Konny', ts: 666, tags: ['a', 'b', 'c'], url: "google"}]);
 
 var bookmark = React.createClass({
   render : function() {
