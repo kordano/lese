@@ -1,18 +1,16 @@
-var model = Immutable.Seq([{title: 'GI Joe', ts: 1959, tags: ['a', 'b', 'c'], url: "google.com"},
-                           {title: 'GI Jane', ts: 1969 , tags: ['a', 'b', 'c'], url: "google.com"},
-                           {title: 'GI Konny', ts: 999, tags: ['a', 'b', 'c'], url: "google"}]);
+var model = Immutable.Seq([{title: 'GI Joe', ts: 1066, tags: ['a', 'b', 'c'], url: "google.com"},
+                           {title: 'GI Jane', ts: 1776 , tags: ['a', 'b', 'c'], url: "google.com"},
+                           {title: 'GI Konny', ts: 666, tags: ['a', 'b', 'c'], url: "google"}]);
+var uri = "localhost:8080";
 
-io = io.connect();
-
-// Emit ready event.
-io.emit('ready');
-
-// Listen for the talk event.
-io.on('talk', function(data) {
-  alert(data.message);
+socket = io.connect();
+socket.on('connect', function() {
+  console.log("Connected to " + uri);
 });
-
-
+socket.on('disconnect', function(){
+  console.log("Disconnected from " + uri);
+});
+    
 var bookmark = React.createClass({
   render : function() {
     var tags = this.props.tags.map(function (t) {
@@ -52,6 +50,12 @@ var overseer = React.createClass({
   },
   handleChange: function(event) {
     this.setState({searchText: event.target.value});
+  },
+  componentDidMount : function() {
+    socket.emit('ready');
+    socket.on('fortune', function(data) {
+      console.log(data.message);
+    });
   },
   render : function() {
     var bl = React.createElement(bookmarkList, {data: this.props.data});
