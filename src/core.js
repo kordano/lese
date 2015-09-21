@@ -17,7 +17,7 @@ function initialConnection(uri){
   })
   return socket
 }
-   
+ 
 var bookmark = React.createClass({
   render : function() {
     var tags = this.props.tags.map(function (t) {
@@ -32,32 +32,45 @@ var bookmark = React.createClass({
 })
 
 var bookmarkList = React.createClass({
-  render : function() {
-    var title = React.DOM.h1(null, "Bookmarks");
-    var bookmarks = this.props.data.bookmarks.map(function (b) {
-      return React.createElement(bookmark,
-                                 {url: b.url,
-                                  title: b.title,
-                                  tags: b.tags,
-                                  ts: b.ts})
-    })
-    return React.DOM.ol(null, title, bookmarks)
-  }
-})
-
-var bookmarkInput = React.createClass({
   getInitialState : function() {
     return {
       data: Immutable.Map({searchText: ""})
     }
   },
   handleChange: function(event) {
+    console.log(event)
     this.setState(({data}) => ({
-      data: data.update('searchText', v => v + (event.target ? event.target.value : ""))
+      data: data.set('searchText', event.target.value)
     }))
   },
-  render : function () {
-    return React.DOM.input({value: this.searchText, onChange: this.handleChange})
+  render : function() {
+    var title = React.DOM.h1(null, "Bookmarks");
+    var search = React.DOM.input({value: this.state.data.searchText, onChange: this.handleChange})
+    var filteredBookmarks = this.props
+          .data
+          .bookmarks
+          .filter(function(b) {
+            if (!this.state.data.searchText || 0 === this.state.data.searchText) {
+              return true
+            } else {
+              if (b.title.search(this.state.data.searchText) < 0){
+                console.log(this.state.data.get('searchText'))
+                return false
+              }
+              else {
+                return true
+              }
+            }
+          }.bind(this))
+    var bookmarks = filteredBookmarks
+          .map(b => {
+            return React.createElement(bookmark,
+                                       {url: b.url,
+                                        title: b.title,
+                                        tags: b.tags,
+                                        ts: b.ts})
+          })
+    return React.DOM.ol(null, search, title, bookmarks)
   }
 })
 
@@ -79,10 +92,10 @@ var overseer = React.createClass({
     }.bind(this))
   },
   render : function() {
-    var bookmarks = React.createElement(bookmarkList, {data: this.props.data})
-    var inputField = React.createElement(bookmarkInput, null)
-    var welcomeMessage = React.DOM.h3(null, this.state.data.get('welcomeText'))
-    return React.DOM.div(null, welcomeMessage, inputField, bookmarks)
+    return React.DOM.div(
+      null,
+      React.DOM.h3(null, this.state.data.get('welcomeText')),
+      React.createElement(bookmarkList, {data: this.props.data}))
   }
 })
 
