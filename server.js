@@ -1,7 +1,24 @@
-var expressio = require('express.io');
-var app = expressio();
-app.http().io();
+var expressio = require('express.io'),
+    app = expressio(),
+    dbName = "bookmarks",
+    bunyan = require("bunyan"),
+    log = bunyan.createLogger({name: "lese"}),
+    nano = require('nano')('http://localhost:5984'),
+    db = nano.use(dbName),
+    logDb = nano.use("log")
 
+// initialize database
+function createDatabase(conn, dbName, logger) {
+  conn.db.create(dbName, function(err, body) {
+    if(!err) {
+      logger.info("Database '" + dbName + "' successfully created!")
+    } else {
+      logger.error("Database creation failed: " + err)
+    }
+  })
+}
+
+// running shell commands
 function tellFortune(callback){
   var sys = require('sys');
   var exec = require('child_process').exec;
@@ -12,6 +29,7 @@ function tellFortune(callback){
 };
 
 // Static routes
+app.http().io();
 app.use(expressio.static('public'));
 app.use('/static', expressio.static('bower_components'));
 app.get('/', function(req, res, next) {
@@ -20,6 +38,7 @@ app.get('/', function(req, res, next) {
 
 // Websocket routes
 app.io.route('ready', function(req) {
+  logDb.insert(log.info("test"))
   tellFortune(function(fortune) {
     req.io.emit('fortune', {
       message: fortune
