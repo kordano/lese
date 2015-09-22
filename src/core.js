@@ -1,7 +1,7 @@
 "use strict"
-var model = {bookmarks: [{title: 'GI Joe', ts: 1066, tags: ['a', 'b', 'c'], url: "google.com"},
-                         {title: 'GI Jane', ts: 1776 , tags: ['a', 'b', 'c'], url: "google.com"},
-                         {title: 'GI Konny', ts: 666, tags: ['a', 'b', 'c'], url: "google"}],
+var model = {bookmarks: [{title: 'The Matrix', ts: 1999, tags: ['a', 'b', 'c'], url: "google.com"},
+                         {title: 'Predator', ts: 1987 , tags: ['a', 'b', 'c'], url: "google.com"},
+                         {title: 'Guardians of the Galaxy', ts: 2014 , tags: ['a', 'b', 'c'], url: "google"}],
              uri: "localhost:8080"}
 
 function initialConnection(uri){
@@ -38,31 +38,35 @@ var bookmarkList = React.createClass({
     }
   },
   handleChange: function(event) {
-    console.log(event)
-    this.setState(({data}) => ({
-      data: data.set('searchText', event.target.value)
-    }))
+    var value = event.target.value
+    this.setState(function(old){
+      var data = old.data
+      return {
+        data: data.set('searchText', value)
+      }
+    })
+  },
+  findBookmark: function(data, b) {
+    if (!data.get('searchText') || 0 === data.get('searchText').length) {
+      return true
+    } else {
+      if (b.title.toLowerCase().search(data.get('searchText')) < 0) {
+        return false
+      }
+      else {
+        return true
+      }
+    }
   },
   render : function() {
-    var title = React.DOM.h1(null, "Bookmarks");
-    var search = React.DOM.input({value: this.state.data.searchText, onChange: this.handleChange})
-    var filteredBookmarks = this.props
-          .data
-          .bookmarks
-          .filter(function(b) {
-            if (!this.state.data.searchText || 0 === this.state.data.searchText) {
-              return true
-            } else {
-              if (b.title.search(this.state.data.searchText) < 0){
-                console.log(this.state.data.get('searchText'))
-                return false
-              }
-              else {
-                return true
-              }
-            }
-          }.bind(this))
-    var bookmarks = filteredBookmarks
+    var title = React.DOM.h1(null, "Bookmarks")
+    var data = this.state.data
+    var inputElement = React.DOM.input({type: "text",
+                                        placeholder: "Search ...",
+                                        value: data.get('searchText'),
+                                        onChange: this.handleChange})
+    var bookmarks = this.props.data.bookmarks
+          .filter(this.findBookmark.bind(null, data))
           .map(b => {
             return React.createElement(bookmark,
                                        {url: b.url,
@@ -70,7 +74,7 @@ var bookmarkList = React.createClass({
                                         tags: b.tags,
                                         ts: b.ts})
           })
-    return React.DOM.ol(null, search, title, bookmarks)
+    return React.DOM.ol(null, inputElement, title, bookmarks)
   }
 })
 
